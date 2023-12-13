@@ -1,5 +1,5 @@
 export type todosTypes = {
-  id: number;
+  id: string;
   title: string;
   contents: string;
   isDone: boolean;

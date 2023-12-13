@@ -14,7 +14,7 @@ const TodoListCard: React.FC<TodoListCardProps> = ({
   setTodosData,
   listIsDone,
 }) => {
-  const clickRemoveButtonHandler = async (id: number) => {
+  const clickRemoveButtonHandler = async (id: string) => {
     try {
       const confirmDelete = window.confirm(
         "정말로 이 할 일을 삭제하시겠습니까?"
@@ -32,7 +32,7 @@ const TodoListCard: React.FC<TodoListCardProps> = ({
     }
   };
 
-  const clickToggleButtonHandler = async (id: number) => {
+  const clickToggleButtonHandler = async (id: string) => {
     try {
       const todoToUpdate = todos.find((todo) => todo.id === id);
       if (!todoToUpdate) {

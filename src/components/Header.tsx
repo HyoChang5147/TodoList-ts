@@ -1,7 +1,7 @@
 import React from "react";
 
 function Header() {
-  return <div>TS - To do List</div>;
+  return <h2>TS - To do List</h2>;
 }
 
 export default Header;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 import type { todosTypes } from "../types/todosTypes";
 
@@ -24,13 +25,13 @@ function Form({ todos, setTodosData }: FormProps) {
     e.preventDefault();
     try {
       const newTodo = {
-        id: todos.length + 1,
+        id: uuidv4(),
         title,
         contents,
         isDone: false,
       };
       await axios.post("http://localhost:4000/todos", newTodo);
-      setTodosData((prevTodos) => [...prevTodos, newTodo]);
+      setTodosData((prevTodos: todosTypes[]) => [...prevTodos, newTodo]);
       setTitle("");
       setContents("");
     } catch (error) {
@@ -40,7 +41,7 @@ function Form({ todos, setTodosData }: FormProps) {
 
   return (
     <div>
-      <h2>할 일 추가</h2>
+      <h2>할 일 작성</h2>
       <form onSubmit={handleSubmit}>
         <label>
           제목:
