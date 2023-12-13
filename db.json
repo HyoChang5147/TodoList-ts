@@ -1,0 +1,22 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "title": "'할일1'",
+      "contents": "리액트 공부",
+      "isDone": false
+    },
+    {
+      "id": 2,
+      "title": "'할일2'",
+      "contents": "리덕스 공부",
+      "isDone": false
+    },
+    {
+      "id": 3,
+      "title": "'할일3'",
+      "contents": "타입스크립트 공부",
+      "isDone": false
+    }
+  ]
+}
