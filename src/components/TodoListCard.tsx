@@ -16,6 +16,13 @@ const TodoListCard: React.FC<TodoListCardProps> = ({
 }) => {
   const clickRemoveButtonHandler = async (id: number) => {
     try {
+      const confirmDelete = window.confirm(
+        "정말로 이 할 일을 삭제하시겠습니까?"
+      );
+      if (!confirmDelete) {
+        return;
+      }
+
       await axios.delete(`http://localhost:4000/todos/${id}`);
 
       const updatedTodos = todos.filter((todo) => todo.id !== id);
@@ -47,7 +54,7 @@ const TodoListCard: React.FC<TodoListCardProps> = ({
 
   return (
     <>
-      <h2>{listIsDone ? "이미 한 일입니다!✨" : "할 일 목록🔥"}</h2>
+      <h2>{listIsDone ? "완료 목록!✨" : "할 일 목록🔥"}</h2>
       <div>
         {todos
           .filter((todo) => todo.isDone === listIsDone)
