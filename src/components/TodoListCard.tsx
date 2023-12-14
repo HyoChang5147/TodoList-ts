@@ -1,19 +1,28 @@
-import React from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchTodos,
+  selectTodosData,
+  removeTodo,
+  toggleTodo,
+} from "../redux/modules/todosSlice";
+import { AppDispatch } from "../redux/config/configStore";
 
 import type { todosTypes } from "../types/todosTypes";
 
-interface TodoListCardProps {
-  todos: todosTypes[];
-  setTodosData: React.Dispatch<React.SetStateAction<todosTypes[]>>;
-  listIsDone: boolean;
-}
+function TodoListCard() {
+  const dispatch: AppDispatch = useDispatch();
+  const todosData: todosTypes[] = useSelector(selectTodosData);
+  const [todos, setTodosData] = useState(todosData);
 
-const TodoListCard: React.FC<TodoListCardProps> = ({
-  todos,
-  setTodosData,
-  listIsDone,
-}) => {
+  useEffect(() => {
+    dispatch(fetchTodos());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setTodosData(todosData);
+  }, [todosData]);
+
   const clickRemoveButtonHandler = async (id: string) => {
     try {
       const confirmDelete = window.confirm(
@@ -23,10 +32,7 @@ const TodoListCard: React.FC<TodoListCardProps> = ({
         return;
       }
 
-      await axios.delete(`http://localhost:4000/todos/${id}`);
-
-      const updatedTodos = todos.filter((todo) => todo.id !== id);
-      setTodosData(updatedTodos);
+      await dispatch(removeTodo(id));
     } catch (error) {
       alert("할 일을 삭제하는 중 오류가 발생했습니다.");
     }
@@ -34,47 +40,55 @@ const TodoListCard: React.FC<TodoListCardProps> = ({
 
   const clickToggleButtonHandler = async (id: string) => {
     try {
-      const todoToUpdate = todos.find((todo) => todo.id === id);
-      if (!todoToUpdate) {
-        alert("할 일을 찾을 수 없습니다!");
-        return;
-      }
-
-      const updatedTodo = { ...todoToUpdate, isDone: !todoToUpdate.isDone };
-      await axios.put(`http://localhost:4000/todos/${id}`, updatedTodo);
-
-      const updatedTodos = todos.map((todo) =>
-        todo.id === id ? updatedTodo : todo
-      );
-      setTodosData(updatedTodos);
+      await dispatch(toggleTodo(id));
     } catch (error) {
       alert("할 일을 업데이트하는 중 오류가 발생했습니다.");
     }
   };
 
+  const completedTodos = todosData.filter((todo) => todo.isDone);
+  const incompleteTodos = todosData.filter((todo) => !todo.isDone);
+
   return (
-    <>
-      <h2>{listIsDone ? "완료 목록!✨" : "할 일 목록🔥"}</h2>
-      <div>
-        {todos
-          .filter((todo) => todo.isDone === listIsDone)
-          .map((todo) => (
-            <div key={todo.id}>
-              <div>{todo.title}</div>
-              <div>{todo.contents}</div>
-              <div>
+    <div>
+      {todos.length === 0 ? (
+        <p>Loading...</p>
+      ) : (
+        <div>
+          <h2>할 일 목록🔥</h2>
+          <ul>
+            {incompleteTodos.map((todo: todosTypes) => (
+              <div key={todo.id}>
+                <h3>{todo.title}</h3>
+                <p>{todo.contents}</p>
+                <button onClick={() => clickToggleButtonHandler(todo.id)}>
+                  완료
+                </button>
                 <button onClick={() => clickRemoveButtonHandler(todo.id)}>
                   삭제
                 </button>
+              </div>
+            ))}
+          </ul>
+          <h2>완료 목록!✨</h2>
+          <ul>
+            {completedTodos.map((todo: todosTypes) => (
+              <div key={todo.id}>
+                <h3>{todo.title}</h3>
+                <p>{todo.contents}</p>
                 <button onClick={() => clickToggleButtonHandler(todo.id)}>
-                  {todo.isDone ? "복습하기!" : "완료!!"}
+                  다시하기
+                </button>
+                <button onClick={() => clickRemoveButtonHandler(todo.id)}>
+                  삭제
                 </button>
               </div>
-            </div>
-          ))}
-      </div>
-    </>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
   );
-};
+}
 
 export default TodoListCard;

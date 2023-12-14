@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
+import { addTodo } from "../redux/modules/todosSlice";
 
-import type { todosTypes } from "../types/todosTypes";
+function Form() {
+  const dispatch = useDispatch();
 
-interface FormProps {
-  todos: todosTypes[];
-  setTodosData: React.Dispatch<React.SetStateAction<todosTypes[]>>;
-}
-
-function Form({ todos, setTodosData }: FormProps) {
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
 
@@ -21,7 +17,7 @@ function Form({ todos, setTodosData }: FormProps) {
     setContents(e.target.value);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const newTodo = {
@@ -30,8 +26,7 @@ function Form({ todos, setTodosData }: FormProps) {
         contents,
         isDone: false,
       };
-      await axios.post("http://localhost:4000/todos", newTodo);
-      setTodosData((prevTodos: todosTypes[]) => [...prevTodos, newTodo]);
+      addTodo(newTodo)(dispatch);
       setTitle("");
       setContents("");
     } catch (error) {
