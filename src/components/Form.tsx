@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { addTodo } from "../redux/modules/todosSlice";
+import { useAppDispatch } from "../redux/hooks";
+
+import type { todosTypes } from "../types/todosTypes";
 
 function Form() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
@@ -25,14 +27,14 @@ function Form() {
         return;
       }
 
-      const newTodo = {
+      const newTodo: todosTypes = {
         id: uuidv4(),
         title,
         contents,
         isDone: false,
       };
 
-      addTodo(newTodo)(dispatch);
+      dispatch(addTodo(newTodo));
       setTitle("");
       setContents("");
     } catch (error) {

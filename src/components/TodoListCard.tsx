@@ -1,27 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   fetchTodos,
   selectTodosData,
   removeTodo,
   toggleTodo,
+  selectLoading,
+  selectError,
 } from "../redux/modules/todosSlice";
-import { AppDispatch } from "../redux/config/configStore";
+import { useAppDispatch } from "../redux/hooks";
 
 import type { todosTypes } from "../types/todosTypes";
 
 function TodoListCard() {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const todosData: todosTypes[] = useSelector(selectTodosData);
-  const [todos, setTodosData] = useState(todosData);
+  const loading: boolean = useSelector(selectLoading);
+  const error: string | null = useSelector(selectError);
 
   useEffect(() => {
     dispatch(fetchTodos());
   }, [dispatch]);
-
-  useEffect(() => {
-    setTodosData(todosData);
-  }, [todosData]);
 
   const clickRemoveButtonHandler = async (id: string) => {
     try {
@@ -49,44 +48,48 @@ function TodoListCard() {
   const completedTodos = todosData.filter((todo) => todo.isDone);
   const incompleteTodos = todosData.filter((todo) => !todo.isDone);
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
   return (
     <div>
-      {todos.length === 0 ? (
-        <p>Loading...</p>
-      ) : (
-        <div>
-          <h2>할 일 목록🔥</h2>
-          <ul>
-            {incompleteTodos.map((todo: todosTypes) => (
-              <div key={todo.id}>
-                <h3>{todo.title}</h3>
-                <p>{todo.contents}</p>
-                <button onClick={() => clickToggleButtonHandler(todo.id)}>
-                  완료
-                </button>
-                <button onClick={() => clickRemoveButtonHandler(todo.id)}>
-                  삭제
-                </button>
-              </div>
-            ))}
-          </ul>
-          <h2>완료 목록!✨</h2>
-          <ul>
-            {completedTodos.map((todo: todosTypes) => (
-              <div key={todo.id}>
-                <h3>{todo.title}</h3>
-                <p>{todo.contents}</p>
-                <button onClick={() => clickToggleButtonHandler(todo.id)}>
-                  다시하기
-                </button>
-                <button onClick={() => clickRemoveButtonHandler(todo.id)}>
-                  삭제
-                </button>
-              </div>
-            ))}
-          </ul>
-        </div>
-      )}
+      <div>
+        <h2>할 일 목록🔥</h2>
+        <ul>
+          {incompleteTodos.map((todo: todosTypes) => (
+            <div key={todo.id}>
+              <h3>{todo.title}</h3>
+              <p>{todo.contents}</p>
+              <button onClick={() => clickToggleButtonHandler(todo.id)}>
+                완료
+              </button>
+              <button onClick={() => clickRemoveButtonHandler(todo.id)}>
+                삭제
+              </button>
+            </div>
+          ))}
+        </ul>
+        <h2>완료 목록!✨</h2>
+        <ul>
+          {completedTodos.map((todo: todosTypes) => (
+            <div key={todo.id}>
+              <h3>{todo.title}</h3>
+              <p>{todo.contents}</p>
+              <button onClick={() => clickToggleButtonHandler(todo.id)}>
+                다시하기
+              </button>
+              <button onClick={() => clickRemoveButtonHandler(todo.id)}>
+                삭제
+              </button>
+            </div>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
