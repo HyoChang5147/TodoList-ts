@@ -20,12 +20,18 @@ function Form() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      if (!title || !contents) {
+        alert("제목과 내용을 모두 입력해주세요.");
+        return;
+      }
+
       const newTodo = {
         id: uuidv4(),
         title,
         contents,
         isDone: false,
       };
+
       addTodo(newTodo)(dispatch);
       setTitle("");
       setContents("");

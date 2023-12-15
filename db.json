@@ -1,40 +1,22 @@
 {
   "todos": [
     {
-      "id": 1,
-      "title": "할일1",
-      "contents": "리액트 공부",
-      "isDone": false
-    },
-    {
-      "id": 2,
-      "title": "할일2",
-      "contents": "리덕스 공부",
-      "isDone": false
-    },
-    {
-      "id": 3,
-      "title": "할일3",
-      "contents": "타입스크립트 공부",
-      "isDone": false
-    },
-    {
       "id": "0a3059e6-efcb-4d97-8c6a-9b4b7e35d204",
       "title": "유유아이디 성공?",
       "contents": "성공했나?",
-      "isDone": true
+      "isDone": false
     },
     {
-      "id": "58fb0416-1df4-49f0-9e79-e1449f66c70b",
+      "id": "c9cbb9c4-f407-43a5-8a76-1c9405243484",
       "title": "안녕",
-      "contents": "성공이니?",
+      "contents": "반가워",
       "isDone": true
     },
     {
-      "id": "022a537a-0b40-4768-a0ba-1c484232e891",
-      "title": "토글버튼",
-      "contents": "성공했다\n",
-      "isDone": true
+      "id": "d1107df6-4815-4499-a85f-d31ca695e704",
+      "title": "성공",
+      "contents": "했다!!!!",
+      "isDone": false
     }
   ]
 }
