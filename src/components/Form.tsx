@@ -1,32 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
+import { useMutation, useQueryClient } from "react-query";
+import { addTodo } from "../api/api";
 import { v4 as uuidv4 } from "uuid";
-import { addTodo } from "../redux/modules/todosSlice";
-import { useAppDispatch } from "../redux/hooks";
 
 import type { todosTypes } from "../types/todosTypes";
 
 function Form() {
-  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
 
-  const [title, setTitle] = useState("");
-  const [contents, setContents] = useState("");
+  const addTodoMutation = useMutation(
+    (newTodo: todosTypes) => addTodo(newTodo),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("todos");
+      },
+    }
+  );
 
-  const writeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
-  };
-
-  const writeContents = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContents(e.target.value);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      if (!title || !contents) {
-        alert("제목과 내용을 모두 입력해주세요.");
-        return;
-      }
+    const formData = new FormData(e.currentTarget);
+    const title = formData.get("title") as string;
+    const contents = formData.get("contents") as string;
 
+    if (title && contents) {
       const newTodo: todosTypes = {
         id: uuidv4(),
         title,
@@ -34,11 +31,7 @@ function Form() {
         isDone: false,
       };
 
-      dispatch(addTodo(newTodo));
-      setTitle("");
-      setContents("");
-    } catch (error) {
-      alert("할 일 추가 실패: " + error);
+      addTodoMutation.mutate(newTodo);
     }
   };
 
@@ -46,16 +39,14 @@ function Form() {
     <div>
       <h2>할 일 작성</h2>
       <form onSubmit={handleSubmit}>
-        <label>
-          제목:
-          <input type="text" value={title} onChange={writeTitle} />
-        </label>
-        <br />
-        <label>
-          내용:
-          <textarea value={contents} onChange={writeContents} />
-        </label>
-        <br />
+        <div>
+          <label htmlFor="title">제목:</label>
+          <input type="text" name="title" id="title" placeholder="Title" />
+        </div>
+        <div>
+          <label htmlFor="contents">내용:</label>
+          <textarea name="contents" id="contents" placeholder="Contents" />
+        </div>
         <button type="submit">할 일 추가</button>
       </form>
     </div>
