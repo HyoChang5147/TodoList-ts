@@ -23,6 +23,11 @@ function Form() {
     const title = formData.get("title") as string;
     const contents = formData.get("contents") as string;
 
+    if (!title || !contents) {
+      alert("제목과 내용을 모두 입력해주세요.");
+      return;
+    }
+
     if (title && contents) {
       const newTodo: todosTypes = {
         id: uuidv4(),

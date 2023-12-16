@@ -10,7 +10,10 @@ function TodoListCard() {
     data: todosData,
     isLoading,
     isError,
-  } = useQuery<todosTypes[], Error>("todos", getTodos);
+  } = useQuery<todosTypes[], Error>("todos", getTodos, {
+    staleTime: 300000,
+    retry: 3,
+  });
 
   const removeTodoMutation = useMutation((id: string) => removeTodo(id), {
     onSuccess: () => {
@@ -28,7 +31,10 @@ function TodoListCard() {
   );
 
   const handleRemoveTodo = (id: string) => {
-    removeTodoMutation.mutate(id);
+    const confirmDelete = window.confirm("정말로 이 할 일을 삭제하시겠습니까?");
+    if (confirmDelete) {
+      removeTodoMutation.mutate(id);
+    }
   };
 
   const handleSwitchTodo = (id: string, isDone: boolean) => {
