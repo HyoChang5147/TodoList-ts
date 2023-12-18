@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { getTodos, removeTodo, switchTodo } from "../api/api";
+import * as St from "../styled-component/StTodoListCard";
 
 import type { todosTypes } from "../types/todosTypes";
 
@@ -53,38 +54,42 @@ function TodoListCard() {
   const incompleteTodos = todosData.filter((todo) => !todo.isDone);
 
   return (
-    <div>
-      <div>
-        <h2>할 일 목록🔥</h2>
-        <ul>
+    <St.Container>
+      <St.TodoSection>
+        <St.TodoTitle>할 일 목록🔥</St.TodoTitle>
+        <St.StyledList>
           {incompleteTodos.map((todo) => (
-            <div key={todo.id}>
-              <h4>{todo.title}</h4>
-              <p>{todo.contents}</p>
-              <button onClick={() => handleSwitchTodo(todo.id, todo.isDone)}>
+            <St.TodoItem key={todo.id}>
+              <St.TodoHeader>{todo.title}</St.TodoHeader>
+              <St.TodoContent>{todo.contents}</St.TodoContent>
+              <St.Button onClick={() => handleSwitchTodo(todo.id, todo.isDone)}>
                 완료
-              </button>
-              <button onClick={() => handleRemoveTodo(todo.id)}>삭제</button>
-            </div>
+              </St.Button>
+              <St.Button onClick={() => handleRemoveTodo(todo.id)}>
+                삭제
+              </St.Button>
+            </St.TodoItem>
           ))}
-        </ul>
-      </div>
-      <div>
-        <h2>완료 목록!✨</h2>
-        <ul>
+        </St.StyledList>
+      </St.TodoSection>
+      <St.TodoSection>
+        <St.TodoTitle>완료 목록!✨</St.TodoTitle>
+        <St.StyledList>
           {completedTodos.map((todo) => (
-            <div key={todo.id}>
-              <h4>{todo.title}</h4>
-              <p>{todo.contents}</p>
-              <button onClick={() => handleSwitchTodo(todo.id, todo.isDone)}>
+            <St.TodoItem key={todo.id}>
+              <St.TodoHeader>{todo.title}</St.TodoHeader>
+              <St.TodoContent>{todo.contents}</St.TodoContent>
+              <St.Button onClick={() => handleSwitchTodo(todo.id, todo.isDone)}>
                 다시하기
-              </button>
-              <button onClick={() => handleRemoveTodo(todo.id)}>삭제</button>
-            </div>
+              </St.Button>
+              <St.Button onClick={() => handleRemoveTodo(todo.id)}>
+                삭제
+              </St.Button>
+            </St.TodoItem>
           ))}
-        </ul>
-      </div>
-    </div>
+        </St.StyledList>
+      </St.TodoSection>
+    </St.Container>
   );
 }
 

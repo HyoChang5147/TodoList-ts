@@ -4,13 +4,13 @@
       "id": "05b2c90a-76ea-48b3-8a8c-691b8cc8dfea",
       "title": "할 일 1",
       "contents": "리액트 공부",
-      "isDone": false
+      "isDone": true
     },
     {
       "id": "1dc210a8-eaf1-42e6-a24e-eb911ac4146f",
       "title": "할 일 2",
       "contents": "리액트 쿼리 공부",
-      "isDone": false
+      "isDone": true
     },
     {
       "id": "8434f4bf-ee31-4fa2-a0e2-159d6ccebf44",

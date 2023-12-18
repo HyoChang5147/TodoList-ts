@@ -1,10 +1,11 @@
 import Form from "../components/Form";
 import TodoListCard from "../components/TodoListCard";
+import * as St from "../styled-component/StHome";
 
 function Home() {
   return (
     <div>
-      <h2>To do List</h2>
+      <St.Header>To do List</St.Header>
       <Form />
       <TodoListCard />
     </div>

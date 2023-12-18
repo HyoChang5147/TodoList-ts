@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { addTodo } from "../api/api";
 import { v4 as uuidv4 } from "uuid";
+import * as St from "../styled-component/StForm";
 
 import type { todosTypes } from "../types/todosTypes";
 
@@ -47,33 +48,33 @@ function Form() {
   };
 
   return (
-    <div>
-      <h2>할 일 작성</h2>
+    <St.FormContainer>
+      <St.Title>할 일 작성</St.Title>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">제목:</label>
+        <St.FormGroup>
+          <label htmlFor="title">제목</label>
           <input
             type="text"
             name="title"
             id="title"
-            placeholder="Title"
+            placeholder="제목을 입력해 주세요!"
             value={titleValue}
             onChange={handleTitleChange}
           />
-        </div>
-        <div>
-          <label htmlFor="contents">내용:</label>
+        </St.FormGroup>
+        <St.FormGroup>
+          <label htmlFor="contents">내용</label>
           <textarea
             name="contents"
             id="contents"
-            placeholder="Contents"
+            placeholder="내용을 입력해 주세요!"
             value={contentsValue}
             onChange={handleContentsChange}
           />
-        </div>
-        <button type="submit">할 일 추가</button>
+        </St.FormGroup>
+        <St.SubmitButton type="submit">할 일 추가</St.SubmitButton>
       </form>
-    </div>
+    </St.FormContainer>
   );
 }
 
